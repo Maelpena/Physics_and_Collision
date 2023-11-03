@@ -200,6 +200,13 @@ void Verlet::GridCollisionResolution()
     }
     int collisionsolved = 0;
 
+
+
+
+
+
+
+
     for (int i = 0; i < nbRow; i++)
     {
 
@@ -221,7 +228,12 @@ void Verlet::GridCollisionResolution()
                                 if (!m_grid.m_cells[i + a][j + b]->circles.empty())
                                 {
 
-                                    SolveCollisions(cel1, m_grid.m_cells[i + a][j + b]);
+                                    // Ajoutez des tâches à la file d'attente, par exemple :
+                              
+                                        // Effectuez les calculs de collision ici
+                                        SolveCollisions(cel1, m_grid.m_cells[i + a][j + b]);
+
+
                                     collisionsolved++;
                                     //m_grid.m_cells[i + a][j + b]->circles.clear();
                                 }
@@ -234,6 +246,10 @@ void Verlet::GridCollisionResolution()
             }         
         }
     }
+    // Lorsque vous avez terminé avec les tâches, arrêtez les threads
+
+
+    // Attendez la fin des threads du pool
 
 /*    for (int i = 1; i < nbRow - 1; i++)
     {
@@ -364,9 +380,17 @@ void Verlet::Clear()
     }
     m_links.clear();
     Circle::maxRadius = 0;
+    Circle::nextRadius = Circle::globalRadius;
 }
 
 void Verlet::UpdateGrid()
 {
     m_grid.UpdateGrid();
 }
+
+
+
+//std::mutex myMutex;
+//std::condition_variable condition;
+//std::queue<std::function<void()>> tasks;
+//bool stop = false;

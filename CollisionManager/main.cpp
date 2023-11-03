@@ -7,6 +7,11 @@
 #include "Slider.h"
 #include "Hud.h"
 #include <string>
+#include <thread>
+#include <mutex>
+#include <queue>
+#include <condition_variable>
+#include <functional> 
 
 using namespace std;
 
@@ -22,9 +27,23 @@ void Draw(sf::RenderWindow& window, Hud* hud)
 
 }
 
+std::mutex myMutex;
+std::condition_variable condition;
+std::queue<std::function<void()>> tasks;
+bool stop = false;
 
+//
 int main()
 {
+
+
+
+
+
+
+
+
+
     sf::ContextSettings settings(0, 0, 1);
 
     sf::RenderWindow window(sf::VideoMode(1300, 1000), "SFML works!", sf::Style::Default, settings);
@@ -52,17 +71,17 @@ int main()
     spawnerPos.push_back({ 850.f, 325.f });
     float spawnerCount = spawnerPos.size();
 
-    float circleSpawnRate = 100.f;
+    float circleSpawnRate = 50.f;
     sf::Vector2f spawnPos(500.f, 200.f);
     sf::Vector2f spawnPos2(400.f, 250.f);
     sf::Vector2f spawnPos3(600.f, 250.f);
 
     vector<Slider> sliders;
 
-    Slider subStepSlider("SubStep", &(Verlet::GetInstance()->m_subStep), sf::Vector2f(1050, 300), 1, 20, 200.f);
-    Slider circleSpawnRateSlider( "Circle spawn rate", &circleSpawnRate, sf::Vector2f(1050, 400), 0, 100, 200.f);
-    Slider spawnerSlider("Circle Spawners", &spawnerCount, sf::Vector2f(1050, 500), 1, spawnerPos.size(), 200.f);
-    Slider radiusSlider("Circle Spawners", &Circle::globalRadius, sf::Vector2f(1050, 600), 10, 30, 200.f);
+    Slider subStepSlider("SubStep", &(Verlet::GetInstance()->m_subStep), sf::Vector2f(1030, 200), 1, 20, 200.f);
+    Slider circleSpawnRateSlider( "Circle spawn rate", &circleSpawnRate, sf::Vector2f(1030, 300), 0, 50, 200.f);
+    Slider spawnerSlider("Circle Spawners", &spawnerCount, sf::Vector2f(1030, 400), 1, spawnerPos.size(), 200.f);
+    Slider radiusSlider("Circle Radius", &Circle::globalRadius, sf::Vector2f(1030, 500), 10, 30, 200.f);
 
     
     Hud* hud = new Hud;
@@ -117,16 +136,17 @@ int main()
                                 {
                                     dragging = false;
                                     Verlet::GetInstance()->m_circles.back()->m_isFixed = true;
+
+
                                     break;
 
                                 }
-                                while (true)
+                                while (!sf::Mouse::isButtonPressed(sf::Mouse::Right) && !(event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Right))
                                 {
                                     mousePos = sf::Vector2f(static_cast<float>(event.mouseMove.x), static_cast<float>(event.mouseMove.y));
-
                                     unsigned int vecSize = Verlet::GetInstance()->m_circles.size();
                                     float dist = Verlet::VectorDistance(Verlet::GetInstance()->m_circles[vecSize - 1]->m_currentPos, mousePos);
-                                    std::cout << dist << endl;
+
                                     if (dist < (Circle::nextRadius + Verlet::GetInstance()->m_circles[vecSize - 1]->m_radius))
                                         break;
 
@@ -142,8 +162,6 @@ int main()
                                     Circle* c = new Circle(false, circlePosition, true, {0,0});
                                     Verlet::GetInstance()->m_links.push_back(new Link(Verlet::GetInstance()->m_circles[vecSize - 1], c));
                                     Verlet::GetInstance()->m_circles.push_back(c);
-
-                                    std::cout << "count " << Verlet::GetInstance()->m_circles.size() << std::endl;
                                 }
 
                                 Draw(window, hud);
@@ -161,7 +179,7 @@ int main()
         timer += deltaTime;
         timer2 += deltaTime;
 
-        if (timer > (1/ circleSpawnRate) && sf::Mouse::isButtonPressed(sf::Mouse::Right))
+        if (timer > (1/ circleSpawnRate) && sf::Mouse::isButtonPressed(sf::Mouse::Right) && !sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
             for (size_t i = 0; i < spawnerCount; i++)
             {
@@ -173,7 +191,6 @@ int main()
         if (timer2 > 1.f)
         {
             std::cout << "Count = " << Verlet::GetInstance()->m_circles.size() << std::endl;
-            cout << "Timer = " << deltaTime << endl;
             timer2 = 0.f;
         }
 

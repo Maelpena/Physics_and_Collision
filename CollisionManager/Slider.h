@@ -9,6 +9,7 @@ struct Slider {
 
 	float* m_paramValue;
 	sf::Text m_paramText;
+	sf::Text m_valueText;
 	sf::Vector2f m_position;
 	sf::Font m_font;
 	int m_minValue;

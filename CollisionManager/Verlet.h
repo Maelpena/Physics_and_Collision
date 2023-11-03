@@ -2,6 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include "Circle.h"
 #include "CollisionGrid.h"
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <queue>
+#include <condition_variable>
+#include <functional> 
+
 class Link;
 class Verlet
 {
@@ -30,6 +37,12 @@ public:
 	void CheckCollisions(float);
 	static float VectorDistance(sf::Vector2f, sf::Vector2f);
 	void UpdateGrid();
+	void Worker();
+
+	std::mutex mutex;
+	std::condition_variable condition;
+	std::queue<std::function<void()>> tasks;
+	bool stop = false;
 
 
 	sf::CircleShape m_constraintShape;

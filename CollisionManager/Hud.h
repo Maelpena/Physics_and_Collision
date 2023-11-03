@@ -11,8 +11,11 @@ struct Hud
 	sf::RectangleShape m_paramsRect;
 	std::vector<Slider*> m_sliders;
 
+
 	sf::Texture m_clearButtonTexture;
 	sf::Sprite m_clearButton;
 	sf::Texture m_playPauseButtonTexture;
 	sf::Sprite m_playPauseButton;
+	sf::Text m_textInfo;
+	sf::Font m_font;
 };

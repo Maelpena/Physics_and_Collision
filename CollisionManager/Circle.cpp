@@ -2,10 +2,11 @@
 #include "Verlet.h"
 #include <iostream>
 
-float Circle::globalRadius = 10;
+float Circle::globalRadius = 20;
 float Circle::maxRadius = globalRadius;
 float Circle::minRadius = 5;
 float Circle::nextRadius = globalRadius;
+float Circle::lastGlobalRadius = globalRadius;
 
 
 Circle::Circle() : Circle(false, { rand() % 500 + 250.f, rand() % 400 + 150.f }, false, {0,0})
@@ -18,21 +19,27 @@ Circle::Circle(sf::Vector2f direction) : Circle(false, {rand() % 500 + 250.f, ra
 }
 Circle::Circle(bool isFixed, sf::Vector2f position, bool isLinked, sf::Vector2f direction)
 {
-	
+	if (lastGlobalRadius != globalRadius)
+	{
+		lastGlobalRadius = globalRadius;
+		Circle::nextRadius = globalRadius;
+
+	}
 	//m_radius = static_cast<float>(rand() % 3) + 5;
 	m_isLinked = isLinked;
+
 
 	if (Circle::nextRadius > Circle::maxRadius)
 	{
 		Circle::maxRadius = Circle::nextRadius;
 		Verlet::GetInstance()->UpdateGrid();
-		std::cout << "Grid Updated" << std::endl;
 	}
 
 	m_radius = Circle::nextRadius;
 	
 	//Circle::globalRadius = 33;
 	Circle::nextRadius = Circle::globalRadius + rand() % 16 - 8;
+	std::cout << Circle::nextRadius << std::endl;
 	//Circle::nextRadius = Circle::globalRadius ;
 	
 	//Circle::globalRadius = 5;

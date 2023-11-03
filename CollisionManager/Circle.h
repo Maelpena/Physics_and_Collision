@@ -17,6 +17,7 @@ public:
 	static float maxRadius;
 	static float minRadius;
 	static float nextRadius;
+	static float lastGlobalRadius;
 	float m_radius;
 	bool m_isLinked;
 	sf::Vector2f m_currentPos;
