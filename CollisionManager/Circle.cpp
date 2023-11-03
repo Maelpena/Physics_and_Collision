@@ -39,7 +39,7 @@ Circle::Circle(bool isFixed, sf::Vector2f position, bool isLinked, sf::Vector2f 
 	
 	//Circle::globalRadius = 33;
 	Circle::nextRadius = Circle::globalRadius + rand() % 16 - 8;
-	std::cout << Circle::nextRadius << std::endl;
+
 	//Circle::nextRadius = Circle::globalRadius ;
 	
 	//Circle::globalRadius = 5;

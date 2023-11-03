@@ -69,9 +69,9 @@ int main()
     spawnerPos.push_back({ 800.f, 300.f });
     spawnerPos.push_back({ 150.f, 325.f });
     spawnerPos.push_back({ 850.f, 325.f });
-    float spawnerCount = spawnerPos.size();
+    float spawnerCount = 3;
 
-    float circleSpawnRate = 50.f;
+    float circleSpawnRate = 5.f;
     sf::Vector2f spawnPos(500.f, 200.f);
     sf::Vector2f spawnPos2(400.f, 250.f);
     sf::Vector2f spawnPos3(600.f, 250.f);
@@ -190,7 +190,7 @@ int main()
         }
         if (timer2 > 1.f)
         {
-            std::cout << "Count = " << Verlet::GetInstance()->m_circles.size() << std::endl;
+            //std::cout << "Count = " << Verlet::GetInstance()->m_circles.size() << std::endl;
             timer2 = 0.f;
         }
 

@@ -58,7 +58,6 @@ void Slider::Move(float xPos)
 	*m_paramValue = static_cast<int>(m_minValue + ((xPos - m_position.x) / m_Xsize) * range);
 	m_circle.setPosition(static_cast<int>((*m_paramValue - m_minValue) * m_pixelStep + m_position.x + 9), m_position.y + m_circleRadius/3);
 
-	std::cout << "Valeur : " << *m_paramValue << std::endl;
 	m_valueText.setString(std::to_string(static_cast<int>(*m_paramValue)));
 
 }

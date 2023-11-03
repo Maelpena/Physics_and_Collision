@@ -194,7 +194,7 @@ void Verlet::GridCollisionResolution()
             cIt = m_circles.erase(cIt);
 
             //m_circles.remove(circles.begin(), circles.end(), val)
-            std::cout << "Out of range x = " << x << " and y = " << y << " and cIt = " <<  std::endl;
+           // std::cout << "Out of range x = " << x << " and y = " << y << " and cIt = " <<  std::endl;
         }
         index++;
     }
